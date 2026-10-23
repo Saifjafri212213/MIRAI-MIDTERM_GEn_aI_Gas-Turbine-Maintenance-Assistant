@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gas Turbine Maintenance Assistant | GE GER-3620 RAG</title>
+  <meta name="description" content="AI-powered technical maintenance and operation assistant for GE Heavy-Duty Gas Turbines grounded in GE GER-3620 Rev P.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="turbine-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+            <path d="M2 12h20"></path>
+          </svg>
+        </div>
+        <div class="header-titles">
+          <h1>Gas Turbine Maintenance Assistant</h1>
+          <p class="header-subtitle">GE GER-3620 Rev P • Heavy-Duty Operating & Maintenance Considerations</p>
+        </div>
+      </div>
+      
+      <div class="header-right">
+        <div class="status-badge" id="system-status">
+          <span class="status-dot"></span>
+          <span class="status-text">ChromaDB • k=8 • Gemini</span>
+        </div>
+        <nav class="nav-tabs">
+          <button class="tab-btn active" id="tab-chat" onclick="switchTab('chat')">Assistant Chat</button>
+          <button class="tab-btn" id="tab-eval" onclick="switchTab('eval')">Evaluation Matrix</button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <!-- Chat View -->
+      <section id="view-chat" class="view-section active">
+        <!-- Preset Questions Header Bar -->
+        <div class="preset-container">
+          <span class="preset-label">Graded Questions:</span>
+          <div class="preset-pills" id="preset-pills">
+            <!-- Dynamically populated or static pills -->
+          </div>
+        </div>
+
+        <div class="chat-layout">
+          <!-- Chat Stream Area -->
+          <div class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+              <!-- Welcome Message -->
+              <div class="message assistant-message welcome-card">
+                <div class="message-avatar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                  </svg>
+                </div>
+                <div class="message-content">
+                  <div class="message-header">
+                    <span class="sender-name">Maintenance Assistant</span>
+                    <span class="message-time">System Ready</span>
+                  </div>
+                  <div class="message-body">
+                    <p>Welcome! I am grounded strictly in the 60-page engineering specification <strong>GE GER-3620 Rev P ("Heavy-Duty Gas Turbine Operating and Maintenance Considerations")</strong>.</p>
+                    <div class="feature-tags">
+                      <span class="feature-tag">✔ Verified Section & Page Citations</span>
+                      <span class="feature-tag">✔ Zero-Hallucination Guardrail ("Not found")</span>
+                      <span class="feature-tag">✔ Inspection Intervals & Maintenance Factors</span>
+                    </div>
+                    <p class="hint-text">Click any of the graded questions above or type your technical query below.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input Bar -->
+            <form class="chat-input-bar" id="chat-form" onsubmit="handleSend(event)">
+              <div class="input-wrapper">
+                <input 
+                  type="text" 
+                  id="query-input" 
+                  placeholder="Ask a question about intervals, inspection scopes, or maintenance factors..." 
+                  autocomplete="off"
+                  required
+                />
+                <button type="submit" id="send-btn" title="Send Question">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Document Context Side Drawer -->
+          <aside class="sidebar-info">
+            <div class="info-card">
+              <h3>Specification Metadata</h3>
+              <div class="meta-list">
+                <div class="meta-row">
+                  <span class="meta-key">Document:</span>
+                  <span class="meta-val">GE GER-3620 Rev P</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-key">Scope:</span>
+                  <span class="meta-val">Heavy-Duty Gas Turbines</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-key">Pages:</span>
+                  <span class="meta-val">60 Pages Indexed</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-key">Chunks:</span>
+                  <span class="meta-val">273 Vector Chunks</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-key">Vector Store:</span>
+                  <span class="meta-val">ChromaDB (ger3620)</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-key">Top-k Retrieval:</span>
+                  <span class="meta-val">k = 8 Chunks</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-card guide-card">
+              <h3>Disassembly Inspection Hierarchy</h3>
+              <ul class="inspection-list">
+                <li>
+                  <span class="badge ci-badge">CI</span>
+                  <div class="insp-desc">
+                    <strong>Combustion Inspection</strong>
+                    <p>Liners, transition pieces, nozzles (8,000–32,000 hrs)</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="badge hgpi-badge">HGPI</span>
+                  <div class="insp-desc">
+                    <strong>Hot Gas Path Inspection</strong>
+                    <p>First-stage nozzles, rotating buckets, shrouds (24,000–32,000 hrs)</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="badge mi-badge">MI</span>
+                  <div class="insp-desc">
+                    <strong>Major Inspection</strong>
+                    <p>Flange-to-flange casing open, compressor rotor & bearings (48,000–64,000 hrs)</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Evaluation Matrix View -->
+      <section id="view-eval" class="view-section">
+        <div class="eval-container">
+          <div class="eval-header-card">
+            <h2>Assignment Evaluation Benchmark</h2>
+            <p>Verification across the 5 graded assignment questions including factual queries, calculation rules, and anti-hallucination traps.</p>
+          </div>
+
+          <div class="eval-table-wrapper">
+            <table class="eval-table" id="eval-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">#</th>
+                  <th style="width: 250px;">Assignment Question</th>
+                  <th>Grounded Answer</th>
+                  <th style="width: 260px;">Source Reference</th>
+                  <th style="width: 140px;">Validation Status</th>
+                </tr>
+              </thead>
+              <tbody id="eval-tbody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>Student RAG Project: Gas Turbine Maintenance Assistant</span>
+      <span>Tech: LangChain 0.3 • ChromaDB • Google Gemini • LCEL</span>
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
